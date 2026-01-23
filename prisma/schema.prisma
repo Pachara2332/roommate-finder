@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  dateOfBirth  DateTime?
+  gender       Gender?
+  occupation   String?
+  bio          String?   @db.Text
+  profileImage String?
+  verified     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  listings         Listing[]
+  preferences      Preference?
+  sentMessages     Message[]   @relation("SentMessages")
+  receivedMessages Message[]   @relation("ReceivedMessages")
+  favorites        Favorite[]
+  givenReviews     Review[]    @relation("GivenReviews")
+  receivedReviews  Review[]    @relation("ReceivedReviews")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+model Listing {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type             ListingType
+  title            String
+  description      String      @db.Text
+  locationProvince String
+  locationDistrict String
+  locationAddress  String
+  rentPrice        Int
+  deposit          Int?
+  availableFrom    DateTime
+
+  roomType           RoomType
+  numRoommatesWanted Int?
+  totalRooms         Int
+  totalBathrooms     Int
+  sizeSqm            Float?
+  furnished          Boolean  @default(false)
+  petsAllowed        Boolean  @default(false)
+  smokingAllowed     Boolean  @default(false)
+
+  status     ListingStatus @default(ACTIVE)
+  viewsCount Int           @default(0)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  images    ListingImage[]
+  messages  Message[]
+  favorites Favorite[]
+  reviews   Review[]
+}
+
+enum ListingType {
+  SEEKING_ROOMMATE
+  OFFERING_ROOM
+}
+
+enum RoomType {
+  PRIVATE
+  SHARED
+}
+
+enum ListingStatus {
+  ACTIVE
+  CLOSED
+  EXPIRED
+}
+
+model ListingImage {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  isPrimary Boolean  @default(false)
+  order     Int
+  createdAt DateTime @default(now())
+}
+
+model Preference {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  minAge           Int?
+  maxAge           Int?
+  preferredGender  Gender?
+  cleanlinessLevel Int?
+  noiseLevel       Int?
+  guestsAllowed    Boolean?
+  workSchedule     String?
+  interests        Json?
+  dealBreakers     Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  listingId  String?
+  listing    Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  content   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, listingId])
+}
+
+model Review {
+  id             String   @id @default(cuid())
+  reviewerId     String
+  reviewer       User     @relation("GivenReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewedUserId String
+  reviewedUser   User     @relation("ReceivedReviews", fields: [reviewedUserId], references: [id], onDelete: Cascade)
+  listingId      String?
+  listing        Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  @@unique([reviewerId, reviewedUserId, listingId])
+}
