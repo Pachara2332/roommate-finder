@@ -7,8 +7,9 @@ import type { ApiResponse, ListingWithUser } from '@/types';
 // GET /api/listings/[id] - Get single listing by ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  props: { params: Promise<{ id: string }> }
 ) {
+  const params = await props.params;
   try {
     const listing = await prisma.listing.findUnique({
       where: { id: params.id },
@@ -61,8 +62,9 @@ export async function GET(
 // PATCH /api/listings/[id] - Update listing
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  props: { params: Promise<{ id: string }> }
 ) {
+  const params = await props.params;
   try {
     const token = getAuthToken(req);
 
@@ -163,8 +165,9 @@ export async function PATCH(
 // DELETE /api/listings/[id] - Delete listing
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  props: { params: Promise<{ id: string }> }
 ) {
+  const params = await props.params;
   try {
     const token = getAuthToken(req);
 

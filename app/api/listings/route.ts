@@ -136,6 +136,14 @@ export async function POST(req: NextRequest) {
         furnished: validatedData.furnished,
         petsAllowed: validatedData.petsAllowed,
         smokingAllowed: validatedData.smokingAllowed,
+        amenities: validatedData.amenities || [],
+        images: validatedData.images ? {
+          create: validatedData.images.map((url, index) => ({
+            imageUrl: url,
+            isPrimary: index === 0,
+            order: index
+          }))
+        } : undefined,
       },
       include: {
         user: {
@@ -168,7 +176,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json<ApiResponse>(
-      { success: false, error: 'เกิดข้อผิดพลาดในการสร้างประกาศ' },
+      { success: false, error: `เกิดข้อผิดพลาดในการสร้างประกาศ: ${error.message}` },
       { status: 500 }
     );
   }

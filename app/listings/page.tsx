@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useToast } from '@/app/components/ToastContext';
+import Navbar from '@/app/components/Navbar';
 
 interface Listing {
     id: string;
@@ -11,8 +12,10 @@ interface Listing {
     locationDistrict: string;
     rentPrice: number;
     roomType: string;
+    images: { imageUrl: string }[];
     user: {
         fullName: string;
+        profileImage: string | null;
     };
 }
 
@@ -80,27 +83,8 @@ export default function ListingsPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                    <Link href="/" className="text-2xl font-bold text-purple-900 tracking-tight">
-                        🏠 RoommateFinder
-                    </Link>
-                    <div className="flex gap-4 items-center">
-                        <Link
-                            href="/listings/create"
-                            className="px-5 py-2.5 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full font-semibold hover:opacity-90 transition-all shadow-lg"
-                        >
-                            + สร้างประกาศ
-                        </Link>
-                        <Link
-                            href="/login"
-                            className="px-5 py-2.5 text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                        >
-                            เข้าสู่ระบบ
-                        </Link>
-                    </div>
-                </div>
-            </nav>
+            {/* Navbar */}
+            <Navbar />
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-6 py-8">
@@ -207,34 +191,81 @@ export default function ListingsPage() {
                             <Link
                                 key={listing.id}
                                 href={`/listings/${listing.id}`}
-                                className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group"
+                                className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1 group flex flex-col h-full"
                             >
-                                {/* Image placeholder */}
-                                <div className="h-48 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center text-6xl">
-                                    {getRoomTypeIcon(listing.roomType)}
-                                </div>
+                                {/* Image Area */}
+                                <div className="relative h-56 bg-gray-100 overflow-hidden">
+                                    {/* Main Image */}
+                                    {listing.images && listing.images.length > 0 ? (
+                                        <img
+                                            src={listing.images[0].imageUrl}
+                                            alt={listing.title}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                    ) : listing.user.profileImage ? (
+                                        // Fallback to User Image if no listing image (User-centric view)
+                                        <div className="w-full h-full flex items-center justify-center bg-purple-50">
+                                            <img
+                                                src={listing.user.profileImage}
+                                                alt={listing.user.fullName}
+                                                className="w-full h-full object-cover opacity-90 blur-sm scale-110"
+                                            />
+                                            <div className="absolute inset-0 bg-black/10" />
+                                        </div>
+                                    ) : (
+                                        // Fallback icon
+                                        <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center text-6xl">
+                                            {getRoomTypeIcon(listing.roomType)}
+                                        </div>
+                                    )}
 
-                                {/* Content */}
-                                <div className="p-5">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
+                                    {/* Overlays */}
+                                    <div className="absolute top-3 right-3">
+                                        <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-purple-700 text-xs font-bold rounded-full shadow-sm">
                                             {getRoomTypeLabel(listing.roomType)}
                                         </span>
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors line-clamp-1">
+
+                                    {/* User Avatar Overlay (Bottom Left) */}
+                                    <div className="absolute -bottom-6 left-5">
+                                        <div className="w-14 h-14 rounded-full border-4 border-white shadow-md overflow-hidden bg-white">
+                                            {listing.user.profileImage ? (
+                                                <img
+                                                    src={listing.user.profileImage}
+                                                    alt={listing.user.fullName}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-lg font-bold">
+                                                    {listing.user.fullName.charAt(0)}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="p-5 pt-8 flex-1 flex flex-col">
+                                    <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-purple-700 transition-colors line-clamp-1">
                                         {listing.title}
                                     </h3>
-                                    <p className="text-gray-500 text-sm mb-3 flex items-center gap-1">
-                                        📍 {listing.locationDistrict}, {listing.locationProvince}
-                                    </p>
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-2xl font-bold text-purple-600">
-                                            ฿{listing.rentPrice.toLocaleString()}
-                                            <span className="text-sm font-normal text-gray-400">/เดือน</span>
-                                        </p>
-                                        <span className="text-sm text-gray-500">
-                                            โดย {listing.user.fullName}
-                                        </span>
+                                    <div className="flex items-center gap-1 text-gray-500 text-sm mb-4">
+                                        <span>📍 {listing.locationDistrict}, {listing.locationProvince}</span>
+                                    </div>
+
+                                    <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4">
+                                        <div>
+                                            <p className="text-xs text-gray-500">ค่าเช่า</p>
+                                            <p className="text-xl font-bold text-purple-600">
+                                                ฿{listing.rentPrice.toLocaleString()}
+                                            </p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-xs text-gray-500">ประกาศโดย</p>
+                                            <p className="text-sm font-medium text-gray-900 line-clamp-1 max-w-[100px]">
+                                                {listing.user.fullName}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </Link>

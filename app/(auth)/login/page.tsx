@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useToast } from '@/app/components/ToastContext';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function LoginPage() {
     const router = useRouter();
+    const { login } = useAuth();
     const { showSuccess, showError } = useToast();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -36,12 +38,10 @@ export default function LoginPage() {
             console.log('Login response:', data);
 
             if (data.success) {
-                // Store token in localStorage
-                localStorage.setItem('token', data.data.token);
-                localStorage.setItem('user', JSON.stringify(data.data.user));
-
+                // Use login from context
+                login(data.data.token, data.data.user);
                 showSuccess('เข้าสู่ระบบสำเร็จ!');
-                router.push('/dashboard');
+                // Router push handled by login context
             } else {
                 console.error('Login failed:', data.error);
                 showError(data.error || 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ');

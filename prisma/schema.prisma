@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  // previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -27,13 +28,14 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  listings         Listing[]
-  preferences      Preference?
-  sentMessages     Message[]   @relation("SentMessages")
-  receivedMessages Message[]   @relation("ReceivedMessages")
-  favorites        Favorite[]
-  givenReviews     Review[]    @relation("GivenReviews")
-  receivedReviews  Review[]    @relation("ReceivedReviews")
+  conversations ConversationParticipant[]
+  messages      Message[]
+
+  listings        Listing[]
+  preference      Preference?
+  favorites       Favorite[]
+  givenReviews    Review[]    @relation("GivenReviews")
+  receivedReviews Review[]    @relation("ReceivedReviews")
 }
 
 enum Gender {
@@ -66,16 +68,17 @@ model Listing {
   furnished          Boolean  @default(false)
   petsAllowed        Boolean  @default(false)
   smokingAllowed     Boolean  @default(false)
+  amenities          String[] @default([])
 
   status     ListingStatus @default(ACTIVE)
   viewsCount Int           @default(0)
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
-  images    ListingImage[]
-  messages  Message[]
-  favorites Favorite[]
-  reviews   Review[]
+  images        ListingImage[]
+  conversations Conversation[]
+  favorites     Favorite[]
+  reviews       Review[]
 }
 
 enum ListingType {
@@ -123,18 +126,45 @@ model Preference {
   updatedAt DateTime @updatedAt
 }
 
+model Conversation {
+  id String @id @default(cuid())
+
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id])
+
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  lastMessageAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  lastReadAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  @@unique([conversationId, userId])
+}
+
 model Message {
-  id         String   @id @default(cuid())
-  senderId   String
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiverId String
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  listingId  String?
-  listing    Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   content   String   @db.Text
-  isRead    Boolean  @default(false)
+  isRead    Boolean  @default(false) // Optional: can rely on lastReadAt in participant
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Favorite {

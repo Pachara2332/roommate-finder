@@ -46,6 +46,8 @@ export const createListingSchema = z.object({
   furnished: z.boolean().default(false),
   petsAllowed: z.boolean().default(false),
   smokingAllowed: z.boolean().default(false),
+  amenities: z.array(z.string()).optional(),
+  images: z.array(z.string()).min(3, 'กรุณาอัปโหลดรูปภาพอย่างน้อย 3 รูป').optional(),
 });
 
 export const updateListingSchema = createListingSchema.partial();
