@@ -45,8 +45,8 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
                                 <Link
                                     href="/dashboard"
                                     className={`px-5 py-2.5 rounded-full font-medium transition-all ${isTransparent
-                                            ? 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                                            : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                                        ? 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+                                        : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
                                         }`}
                                 >
                                     Dashboard
@@ -71,8 +71,8 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
                             <Link
                                 href="/register"
                                 className={`px-5 py-2.5 rounded-full font-semibold transition-all hover:scale-105 shadow-lg ${isTransparent
-                                        ? 'bg-white text-purple-900 hover:bg-white/90'
-                                        : 'bg-gradient-to-r from-pink-500 to-orange-400 text-white hover:opacity-90'
+                                    ? 'bg-white text-purple-900 hover:bg-white/90'
+                                    : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:opacity-90'
                                     }`}
                             >
                                 สมัครสมาชิก

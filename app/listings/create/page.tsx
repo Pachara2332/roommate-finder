@@ -149,7 +149,7 @@ export default function CreateListingPage() {
                                     value={formData.type}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
                                 >
                                     <option value="OFFERING_ROOM">มีห้องให้เช่า</option>
                                     <option value="SEEKING_ROOMMATE">หาเพื่อนร่วมห้อง</option>
@@ -168,7 +168,7 @@ export default function CreateListingPage() {
                                     onChange={handleChange}
                                     required
                                     placeholder="เช่น หาเพื่อนร่วมคอนโด ใกล้ BTS อโศก"
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                 />
                             </div>
 
@@ -184,7 +184,7 @@ export default function CreateListingPage() {
                                     required
                                     rows={5}
                                     placeholder="รายละเอียดเกี่ยวกับห้อง สิ่งอำนวยความสะดวก และลักษณะรูมเมทที่ต้องการ"
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none bg-white text-gray-900 placeholder-gray-500"
                                 />
                             </div>
 
@@ -199,7 +199,7 @@ export default function CreateListingPage() {
                                         value={formData.locationProvince}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
                                     >
                                         <option value="">เลือกจังหวัด</option>
                                         {PROVINCES.map(province => (
@@ -218,7 +218,7 @@ export default function CreateListingPage() {
                                         onChange={handleChange}
                                         required
                                         placeholder="เช่น วัฒนา"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                     />
                                 </div>
                             </div>
@@ -234,7 +234,7 @@ export default function CreateListingPage() {
                                     onChange={handleChange}
                                     required
                                     placeholder="เช่น 123 ซอยสุขุมวิท 23"
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                 />
                             </div>
 
@@ -251,7 +251,7 @@ export default function CreateListingPage() {
                                         onChange={handleChange}
                                         required
                                         placeholder="8500"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                     />
                                 </div>
                                 <div>
@@ -263,7 +263,7 @@ export default function CreateListingPage() {
                                         value={formData.roomType}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
                                     >
                                         <option value="">เลือกประเภทห้อง</option>
                                         <option value="PRIVATE">ห้องส่วนตัว</option>
@@ -283,7 +283,7 @@ export default function CreateListingPage() {
                                         value={formData.deposit}
                                         onChange={handleChange}
                                         placeholder="17000"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                     />
                                 </div>
                                 <div>
@@ -296,7 +296,7 @@ export default function CreateListingPage() {
                                         value={formData.sizeSqm}
                                         onChange={handleChange}
                                         placeholder="25"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                     />
                                 </div>
                             </div>
@@ -312,7 +312,7 @@ export default function CreateListingPage() {
                                         value={formData.totalRooms}
                                         onChange={handleChange}
                                         min="1"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900"
                                     />
                                 </div>
                                 <div>
@@ -325,7 +325,7 @@ export default function CreateListingPage() {
                                         value={formData.totalBathrooms}
                                         onChange={handleChange}
                                         min="1"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-gray-900"
                                     />
                                 </div>
                             </div>
@@ -384,7 +384,7 @@ export default function CreateListingPage() {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full py-4 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-xl font-bold text-lg hover:opacity-90 transition-all hover:scale-[1.01] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl font-bold text-lg hover:opacity-90 transition-all hover:scale-[1.01] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isLoading ? (
                                         <span className="flex items-center justify-center gap-2">

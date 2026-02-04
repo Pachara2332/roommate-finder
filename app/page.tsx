@@ -34,7 +34,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/listings"
-                className="px-8 py-4 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full font-bold text-lg hover:opacity-90 transition-all hover:scale-105 shadow-xl"
+                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-full font-bold text-lg hover:opacity-90 transition-all hover:scale-105 shadow-xl"
               >
                 🔍 ดูประกาศทั้งหมด
               </Link>
