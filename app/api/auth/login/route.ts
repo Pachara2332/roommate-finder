@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json<ApiResponse>(
-      { success: false, error: 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ' },
+      { success: false, error: `เกิดข้อผิดพลาด: ${error instanceof Error ? error.message : String(error)}` },
       { status: 500 }
     );
   }

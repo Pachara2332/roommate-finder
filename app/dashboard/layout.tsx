@@ -1,4 +1,6 @@
 import Link from "next/link";
+import NotificationBell from "@/app/components/NotificationBell";
+import LogoutButton from "@/app/components/LogoutButton";
 
 export default function DashboardLayout({
     children,
@@ -20,7 +22,8 @@ export default function DashboardLayout({
                         >
                             ดูประกาศ
                         </Link>
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white">
+                        <NotificationBell />
+                        <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white">
                             👤
                         </div>
                     </div>
@@ -60,17 +63,14 @@ export default function DashboardLayout({
                     <div className="mt-8 pt-6 border-t border-gray-100">
                         <Link
                             href="/listings/create"
-                            className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg"
+                            className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg"
                         >
                             + สร้างประกาศ
                         </Link>
                     </div>
 
                     <div className="absolute bottom-6 left-6 right-6">
-                        <button className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-red-500 transition-colors w-full">
-                            <span className="text-xl">🚪</span>
-                            ออกจากระบบ
-                        </button>
+                        <LogoutButton />
                     </div>
                 </aside>
 

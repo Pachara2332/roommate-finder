@@ -116,8 +116,8 @@ export default function MessagesPage() {
                             >
                                 <div
                                     className={`max-w-xs md:max-w-md px-4 py-3 rounded-2xl ${msg.from === "me"
-                                            ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                                            : "bg-white text-gray-800 shadow-sm"
+                                        ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white"
+                                        : "bg-white text-gray-800 shadow-sm"
                                         }`}
                                 >
                                     <p className="text-sm">{msg.text}</p>
@@ -142,7 +142,7 @@ export default function MessagesPage() {
                                 placeholder="พิมพ์ข้อความ..."
                                 className="flex-1 px-4 py-3 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
                             />
-                            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:opacity-90 transition-all">
+                            <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl font-semibold hover:opacity-90 transition-all">
                                 ส่ง
                             </button>
                         </div>

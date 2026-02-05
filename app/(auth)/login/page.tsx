@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useToast } from '@/app/components/ToastContext';
+import { useAuthStore } from '@/stores';
 
 export default function LoginPage() {
     const router = useRouter();
     const { showSuccess, showError } = useToast();
+    const { setUser } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -21,11 +23,9 @@ export default function LoginPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Login form submitted');
         setIsLoading(true);
 
         try {
-            console.log('Sending login request...', formData);
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -33,17 +33,13 @@ export default function LoginPage() {
             });
 
             const data = await response.json();
-            console.log('Login response:', data);
 
             if (data.success) {
-                // Store token in localStorage
-                localStorage.setItem('token', data.data.token);
-                localStorage.setItem('user', JSON.stringify(data.data.user));
-
+                // Use zustand store instead of localStorage
+                setUser(data.data.user, data.data.token);
                 showSuccess('เข้าสู่ระบบสำเร็จ!');
                 router.push('/dashboard');
             } else {
-                console.error('Login failed:', data.error);
                 showError(data.error || 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ');
             }
         } catch (error) {
@@ -83,7 +79,7 @@ export default function LoginPage() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
                                 placeholder="example@email.com"
                             />
                         </div>
@@ -99,7 +95,7 @@ export default function LoginPage() {
                                 value={formData.password}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
                                 placeholder="กรอกรหัสผ่าน"
                             />
                         </div>

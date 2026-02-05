@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/app/components/ToastContext';
+import { useAuthStore } from '@/stores';
 
 interface Listing {
     id: string;
@@ -24,8 +25,8 @@ interface Message {
 export default function DashboardPage() {
     const router = useRouter();
     const { showError } = useToast();
+    const { user, token, isAuthenticated } = useAuthStore();
     const [isLoading, setIsLoading] = useState(true);
-    const [userName, setUserName] = useState('');
     const [myListings, setMyListings] = useState<Listing[]>([]);
     const [recentMessages, setRecentMessages] = useState<Message[]>([]);
     const [stats, setStats] = useState({
@@ -35,25 +36,14 @@ export default function DashboardPage() {
     });
 
     useEffect(() => {
-        // Check if user is logged in
-        const token = localStorage.getItem('token');
-        const user = localStorage.getItem('user');
-
-        if (!token || !user) {
-            router.push('/login');
-            return;
-        }
-
-        try {
-            const userData = JSON.parse(user);
-            setUserName(userData.fullName);
-        } catch {
+        // Check if user is logged in using zustand
+        if (!isAuthenticated || !token) {
             router.push('/login');
             return;
         }
 
         fetchDashboardData(token);
-    }, [router]);
+    }, [isAuthenticated, token, router]);
 
     const fetchDashboardData = async (token: string) => {
         try {
@@ -123,7 +113,7 @@ export default function DashboardPage() {
         <div>
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">สวัสดีครับ {userName} 👋</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">สวัสดีครับ {user?.fullName || 'User'} 👋</h1>
                 <p className="text-gray-600">ภาพรวมกิจกรรมของคุณ</p>
             </div>
 

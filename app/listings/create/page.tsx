@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useToast } from '@/app/components/ToastContext';
+import Navbar from '@/app/components/Navbar';
+import { useAuthStore } from '@/stores';
 
 export default function CreateListingPage() {
     const router = useRouter();
     const { showSuccess, showError } = useToast();
+    const { token, isAuthenticated } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         type: 'OFFERING_ROOM',
@@ -40,8 +43,7 @@ export default function CreateListingPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const token = localStorage.getItem('token');
-        if (!token) {
+        if (!isAuthenticated || !token) {
             showError('กรุณาเข้าสู่ระบบก่อน');
             router.push('/login');
             return;
@@ -104,19 +106,7 @@ export default function CreateListingPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                    <Link href="/" className="text-2xl font-bold text-purple-900 tracking-tight">
-                        🏠 RoommateFinder
-                    </Link>
-                    <Link
-                        href="/listings"
-                        className="px-5 py-2.5 text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                    >
-                        ← กลับไปหน้าประกาศ
-                    </Link>
-                </div>
-            </nav>
+            <Navbar variant="light" />
 
             {/* Main Content */}
             <main className="max-w-3xl mx-auto px-6 py-8">
@@ -135,7 +125,7 @@ export default function CreateListingPage() {
                                 value={formData.type}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
                             >
                                 <option value="OFFERING_ROOM">มีห้องให้เช่า</option>
                                 <option value="SEEKING_ROOMMATE">หาเพื่อนร่วมห้อง</option>
@@ -154,7 +144,7 @@ export default function CreateListingPage() {
                                 onChange={handleChange}
                                 required
                                 placeholder="เช่น หาเพื่อนร่วมคอนโด ใกล้ BTS อโศก"
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 placeholder-gray-400 bg-white"
                             />
                         </div>
 
@@ -170,7 +160,7 @@ export default function CreateListingPage() {
                                 required
                                 rows={5}
                                 placeholder="รายละเอียดเกี่ยวกับห้อง สิ่งอำนวยความสะดวก และลักษณะรูมเมทที่ต้องการ"
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-400 bg-white"
                             />
                         </div>
 

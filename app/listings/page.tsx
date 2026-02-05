@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useToast } from '@/app/components/ToastContext';
+import Navbar from '@/app/components/Navbar';
+import { useListingStore } from '@/stores';
 
 interface Listing {
     id: string;
@@ -18,15 +20,9 @@ interface Listing {
 
 export default function ListingsPage() {
     const { showError } = useToast();
+    const { filters, setFilters, setListings: setGlobalListings } = useListingStore();
     const [listings, setListings] = useState<Listing[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [filters, setFilters] = useState({
-        locationProvince: '',
-        minPrice: '',
-        maxPrice: '',
-        roomType: '',
-        furnished: false,
-    });
 
     useEffect(() => {
         fetchListings();
@@ -47,6 +43,7 @@ export default function ListingsPage() {
 
             if (data.success && data.data?.items) {
                 setListings(data.data.items);
+                setGlobalListings(data.data.items);
             }
         } catch (error) {
             showError('เกิดข้อผิดพลาดในการโหลดประกาศ');
@@ -55,17 +52,26 @@ export default function ListingsPage() {
         }
     };
 
+    const [localFilters, setLocalFilters] = useState({
+        locationProvince: filters.locationProvince,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+        roomType: filters.roomType,
+        furnished: filters.furnished,
+    });
+
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value, type } = e.target;
         const checked = (e.target as HTMLInputElement).checked;
 
-        setFilters(prev => ({
+        setLocalFilters(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
     };
 
     const handleSearch = () => {
+        setFilters(localFilters);
         fetchListings();
     };
 
@@ -80,27 +86,7 @@ export default function ListingsPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                    <Link href="/" className="text-2xl font-bold text-purple-900 tracking-tight">
-                        🏠 RoommateFinder
-                    </Link>
-                    <div className="flex gap-4 items-center">
-                        <Link
-                            href="/listings/create"
-                            className="px-5 py-2.5 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full font-semibold hover:opacity-90 transition-all shadow-lg"
-                        >
-                            + สร้างประกาศ
-                        </Link>
-                        <Link
-                            href="/login"
-                            className="px-5 py-2.5 text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                        >
-                            เข้าสู่ระบบ
-                        </Link>
-                    </div>
-                </div>
-            </nav>
+            <Navbar variant="light" />
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-6 py-8">

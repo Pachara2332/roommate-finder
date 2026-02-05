@@ -1,80 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Navbar from '@/app/components/Navbar';
 
 export default function Home() {
-  const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    // Check for auth token and user data
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData));
-      } catch (e) {
-        console.error('Failed to parse user data', e);
-      }
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setUser(null);
-    router.refresh();
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/10 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-white tracking-tight">
-            🏠 RoommateFinder
-          </Link>
-          <div className="flex gap-4 items-center">
-            {user ? (
-              <>
-                <div className="hidden md:flex items-center gap-2 text-white/90 mr-2">
-                  <span>สวัสดี, {user.fullName || 'User'}</span>
-                </div>
-                <Link
-                  href="/dashboard"
-                  className="px-5 py-2.5 bg-white/10 text-white rounded-full font-medium hover:bg-white/20 transition-all border border-white/20"
-                >
-                  Dashboard
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="px-5 py-2.5 text-white/70 hover:text-white font-medium transition-colors"
-                >
-                  ออกจากระบบ
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="px-5 py-2.5 text-white/90 hover:text-white font-medium transition-colors"
-                >
-                  เข้าสู่ระบบ
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-5 py-2.5 bg-white text-purple-900 rounded-full font-semibold hover:bg-white/90 transition-all hover:scale-105 shadow-lg"
-                >
-                  สมัครสมาชิก
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+      <Navbar variant="dark" />
 
       {/* Hero Section */}
       <main className="pt-32 pb-20 px-6">
@@ -90,7 +23,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/listings"
-                className="px-8 py-4 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full font-bold text-lg hover:opacity-90 transition-all hover:scale-105 shadow-xl"
+                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-full font-bold text-lg hover:opacity-90 transition-all hover:scale-105 shadow-xl"
               >
                 🔍 ดูประกาศทั้งหมด
               </Link>

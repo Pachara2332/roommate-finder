@@ -18,8 +18,8 @@ export default function SettingsPage() {
                 <button
                     onClick={() => setActiveTab("profile")}
                     className={`pb-4 px-2 font-medium transition-colors ${activeTab === "profile"
-                            ? "text-purple-600 border-b-2 border-purple-600"
-                            : "text-gray-500 hover:text-gray-700"
+                        ? "text-purple-600 border-b-2 border-purple-600"
+                        : "text-gray-500 hover:text-gray-700"
                         }`}
                 >
                     โปรไฟล์
@@ -27,8 +27,8 @@ export default function SettingsPage() {
                 <button
                     onClick={() => setActiveTab("notifications")}
                     className={`pb-4 px-2 font-medium transition-colors ${activeTab === "notifications"
-                            ? "text-purple-600 border-b-2 border-purple-600"
-                            : "text-gray-500 hover:text-gray-700"
+                        ? "text-purple-600 border-b-2 border-purple-600"
+                        : "text-gray-500 hover:text-gray-700"
                         }`}
                 >
                     การแจ้งเตือน
@@ -36,8 +36,8 @@ export default function SettingsPage() {
                 <button
                     onClick={() => setActiveTab("security")}
                     className={`pb-4 px-2 font-medium transition-colors ${activeTab === "security"
-                            ? "text-purple-600 border-b-2 border-purple-600"
-                            : "text-gray-500 hover:text-gray-700"
+                        ? "text-purple-600 border-b-2 border-purple-600"
+                        : "text-gray-500 hover:text-gray-700"
                         }`}
                 >
                     ความปลอดภัย
@@ -121,7 +121,7 @@ export default function SettingsPage() {
 
                             <button
                                 type="submit"
-                                className="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg"
+                                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg"
                             >
                                 บันทึกการเปลี่ยนแปลง
                             </button>
